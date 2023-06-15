@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
     s.name     = 'QY_RENAME_NIMSDK'
-    s.version  = '1.0'
+    s.version  = '1.1'
     s.license  = { :"type" => "Copyright",
                    :"text" => " Copyright 2021 Netease \n"}  
     s.summary  = '网易七鱼客服访客端重命名NIMSDK'
