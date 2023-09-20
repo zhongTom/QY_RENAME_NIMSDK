@@ -12,8 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class NIMNotificationObject;
 @class NIMMessage;
-//@class NIMChatroomCdnTrackInfo;
-//@protocol NIMMsgIndexProduceDelegate;
+@class NIMChatroomCdnTrackInfo;
+@protocol NIMMsgIndexProduceDelegate;
+@class NIMLogDesensitizationConfig;
 
 /**
  *  SDK 配置委托
@@ -43,7 +44,29 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * 聊天室cdn统计回调，回调时间间隔为NIMSDKConfig.cdnTrackInterval
  */
-//- (void)onChatroomCdnTrack:(NIMChatroomCdnTrackInfo *)trackInfo forRoom:(NSString *)roomID;
+- (void)onChatroomCdnTrack:(NIMChatroomCdnTrackInfo *)trackInfo forRoom:(NSString *)roomID;
+
+- (NSString *)tokenCallback:(const NSString *)url;
+
+/**
+ * 采用动态Token登陆时，SDK通过该回调方法从App获取Token
+ */
+- (NSString *)dynamicTokenForAccount:(NSString *)account;
+
+/**
+ * SDK通过该回调方法从App获取LoginExt
+ */
+- (NSString *)dynamicLoginExtForAccount:(NSString *)account;
+
+/**
+ * 采用动态Token登陆聊天室时，SDK通过该回调方法从App获取聊天室登陆Token
+ */
+- (NSString *)dynamicChatRoomTokenForAccount:(NSString *)account room:(NSString *)roomId appKey:(NSString *)appKey;
+
+/**
+ * SDK通过该回调方法从App获取聊天室LoginExt
+ */
+- (NSString *)dynamicChatRoomLoginExtForAccount:(NSString *)account room:(NSString *)roomId appKey:(NSString *)appKey;
 
 @end
 
@@ -77,7 +100,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  是否在收到聊天室消息后自动下载附件
  *  @discussion 默认为NO
  */
-//@property (nonatomic,assign)    BOOL    fetchAttachmentAutomaticallyAfterReceivingInChatroom;
+@property (nonatomic,assign)    BOOL    fetchAttachmentAutomaticallyAfterReceivingInChatroom;
 
 
 /**
@@ -85,6 +108,12 @@ NS_ASSUME_NONNULL_BEGIN
  *  @discussion 默认为 NO，只有在上层 APP 开启了 Data Protection 时才起效
  */
 @property (nonatomic,assign)    BOOL    fileProtectionNone;
+
+/**
+ *  APP 是否开启 Data Protection
+ *  @discussion 默认为 NO，如果开启，请将此设为YES
+ */
+@property (nonatomic,assign)    BOOL    enableDataProtection;
 
 /**
  *  是否需要将被撤回的消息计入未读计算考虑
@@ -216,7 +245,7 @@ NS_ASSUME_NONNULL_BEGIN
  * 聊天室消息接收回调最小时间间隔，不设置时，采用默认值
  *  @discusssion SDK采纳的有效设置区间为：50毫秒到500毫秒，如果低于或高于边界值，采用边界值
  */
-//@property (nonatomic, assign) NSTimeInterval chatroomMessageReceiveMinInterval;
+@property (nonatomic, assign) NSTimeInterval chatroomMessageReceiveMinInterval;
 
 /**
  *  NIMSDK优化设置
@@ -234,14 +263,64 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setupSDKDir:(NSString *)sdkDir;
 
 
-//@property (nonatomic,assign)    BOOL    linkQuickSwitch;
+@property (nonatomic,assign)    BOOL    linkQuickSwitch;
 
 /**
  *  消息索引生成委托
  */
-//@property (nullable, nonatomic)    id<NIMMsgIndexProduceDelegate> msgIndexProducer;
+@property (nullable, nonatomic)    id<NIMMsgIndexProduceDelegate> msgIndexProducer;
 
 @property (nonatomic, copy) NSString * flutterSDKVersion;
+
+/**
+ * 日志脱敏配置
+ */
+@property (nonatomic, copy) NIMLogDesensitizationConfig *logDesensitizationConfig;
+
+@property (nonatomic, assign) BOOL isSingleTable;
+
+/**
+ * 是否限制info类api在主线程执行，默认NO
+ */
+@property (nonatomic,assign) BOOL infoApiOnMain;
+
+/**
+ * 当网络不可用时,是否尝试http请求 默认YES (启用)
+ */
+@property (nonatomic, assign) BOOL tryHttpReqNetUnav;
+
+/**
+ * 是否只允许https请求[高可用模块]
+ * 1:只允许https, other:不限制http/https,默认0(不限制http/https)
+ * 处理理的伪代码如下
+ * if(settings.onlyHttpsSupported && url.shceme == "http" && url.domain.port() == 0) {
+ *       url.scheme.replease("https");
+ *       request.urlList.insert(url);
+ *  }
+ */
+@property (nonatomic, assign) NSInteger havOnlyHttpsSupported;
+
+/**
+ * 发送多链接http请求时是否ip类型优先[高可用模块]
+ * 1:ip优先 other:按正常顺序访问,对于urlList不进行调整,默认0
+ */
+@property (nonatomic, assign) NSInteger havHttpReqIPPreferred;
+
+/**
+ * 单条http请求的超时时间(ms) [高可用模块多链接http请求]
+ * 0:使用默认值(7000ms)
+ * MAX:30000ms, MIN:1000ms
+ */
+@property (nonatomic, assign) NSInteger havSReqTimeoutMs;
+
+/**
+ * 单条http请求预判失败的超时时间(ms) [高可用模块多链接http请求]
+ * 0:使用默认值(2000ms)
+ * MAX:(havSReqTimeoutMs - 80), MIN:200
+ */
+@property (nonatomic, assign) NSInteger havSReqPredFailTimeMs;
+
+@property (nonatomic, assign) BOOL disableReport;
 
 @end
 

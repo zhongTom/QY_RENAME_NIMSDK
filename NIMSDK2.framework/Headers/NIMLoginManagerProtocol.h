@@ -97,7 +97,7 @@ typedef NS_ENUM(NSInteger, NIMSDKAuthMode)
      *  聊天室单独鉴权
      *  @discussion 调用 NIMChatroomManager 进入聊天室接口时设置 NIMChatroomIndependentMode 即为聊天室单独聊天鉴权模式
      */
-//    NIMSDKAuthModeChatroom,
+    NIMSDKAuthModeChatroom,
 };
 
 /**
@@ -212,6 +212,7 @@ typedef NS_ENUM(NSInteger, NIMMultiLoginType){
 
 /**
  *  提供动态登陆Token
+ *  @deprecated 请使用 NIMSDKConfigDelegate dynamicTokenForAccount:
  */
 - (NSString *)provideDynamicTokenForAccount:(NSString *)account;
 
@@ -235,6 +236,15 @@ typedef NS_ENUM(NSInteger, NIMMultiLoginType){
         token:(NSString *)token
    completion:(NIMLoginHandler)completion;
 
+/**
+ *  登录
+ *
+ *  @param account    帐号
+ *  @param token      令牌 (authType为NIMSDKAuthTypeDefault时有效)
+ *  @param authType   登陆类型，取值范围为NIMSDKAuthType
+ *  @param loginExt   登录自定义字段 (authType为NIMSDKAuthTypeThirdParty时有效；authType为NIMSDKAuthTypeThirdPartyDynamic时，loginExt通过NIMSDKConfigDelegate中的dynamicLoginExtForAccount:来获取)
+ *  @param completion 完成回调
+ */
 - (void)login:(NSString *)account
         token:(NSString *)token
      authType:(int)authType

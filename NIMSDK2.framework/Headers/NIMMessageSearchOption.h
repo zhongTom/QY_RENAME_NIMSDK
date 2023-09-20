@@ -64,6 +64,8 @@ typedef NS_ENUM(NSInteger,NIMMessageSearchOrder) {
 
 /**
  *  检索顺序
+ *
+ *  默认从旧消息往新消息查询
  */
 @property (nonatomic,assign)    NIMMessageSearchOrder order;
 

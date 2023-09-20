@@ -37,6 +37,15 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (nullable NIMTeam *)teamById:(NSString *)teamId;
 
+/**
+ *  根据群组 ID 获取具体的群组信息
+ *
+ *  @param teamId 群组 ID
+ *
+ *  @return 群组信息
+ *  @discussion 如果自己不在群里，则该接口返回 nil
+ */
+- (nullable NIMTeam *)teamById2:(NSString *)teamId;
 
 /**
  *  根据群组ID判断是否是我所在的群
