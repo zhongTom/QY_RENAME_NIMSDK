@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "NIMSession.h"
 NS_ASSUME_NONNULL_BEGIN
 
 @class NIMMessage;
@@ -32,6 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class NIMAddEmptyRecentSessionBySessionOption;
 @class NIMMessageFullKeywordSearchOption;
 @class NIMMessageFullKeywordSearchOrderByTimeOption;
+@class NIMMessagesInSessionOption;
 
 /**
  *  读取服务器消息记录block
@@ -280,7 +281,6 @@ typedef NS_ENUM(NSUInteger, NIMClearMessagesStatus)
 - (void)didRemoveRecentSession:(NIMRecentSession *)recentSession
               totalUnreadCount:(NSInteger)totalUnreadCount;
 
-
 /**
  *  单个会话里所有消息被删除的回调
  *
@@ -303,6 +303,13 @@ typedef NS_ENUM(NSUInteger, NIMClearMessagesStatus)
  *  所有消息已读的回调
  */
 - (void)allMessagesRead;
+
+/**
+ *  消息已读的回调
+ *
+ *  @param type 消息所属会话类型
+ */
+- (void)messagesReadOfType:(NIMSessionType)type;
 
 /**
  *  会话服务，会话更新
@@ -529,6 +536,14 @@ typedef NS_ENUM(NSUInteger, NIMClearMessagesStatus)
 - (void)markAllMessagesRead;
 
 /**
+ *  设置会话消息为已读
+ *
+ *  @param type 会话类型
+ *  @discussion 异步方法，消息会标记为设置的状态。不会触发单条 recentSession 更新的回调，但会触发回调 - (void)messagesReadOfType:
+ */
+- (void)markMessagesReadOfType:(NIMSessionType)type;
+
+/**
  *  批量设置多个会话消息已读
  *
  *  @discussion 异步方法。不会触发单条 recentSession 更新的回调，但会触发回调 - onBatchMarkMessagesReadInSessions:
@@ -627,6 +642,15 @@ typedef NS_ENUM(NSUInteger, NIMClearMessagesStatus)
                completion:(NIMFetchMessageHistoryBlock)completion;
 
 /**
+ * 从本地db读取一个会话里某条消息之前的若干条的消息
+ *
+ * @param option 参数配置
+ * @param completion 回调
+ */
+- (void)messagesInSession:(NIMMessagesInSessionOption *)option
+               completion:(NIMFetchMessageHistoryBlock)completion;
+
+/**
  *  根据消息Id获取消息
  *
  *  @param session    消息所属会话结合
@@ -645,6 +669,13 @@ typedef NS_ENUM(NSUInteger, NIMClearMessagesStatus)
  */
 - (NSInteger)allUnreadCount;
 
+/**
+ *  按 SessionType 获取未读数
+ *  @discussion  只能在主线程调用,包括忽略提醒的会话
+ *  @param type   会话类型
+ *  @return 未读数
+ */
+- (NSInteger)unreadCountOfType:(NIMSessionType)type;
 
 /**
  *  获取所有需要通知/不需要通知的最近会话未读数
@@ -678,6 +709,14 @@ typedef NS_ENUM(NSUInteger, NIMClearMessagesStatus)
  */
 - (nullable NSArray<NIMRecentSession *> *)allRecentSessionsWithOption:(NIMRecentSessionOption *)option;
 
+/**
+ *  获取指定数量的最近会话
+ *
+ *  @param limit 本次查询最近会话数量上限。最大可设置到100，超过100则默认为100。
+ *
+ *  @return 最近会话列表
+ */
+- (nullable NSArray<NIMRecentSession *> *)queryRecentSessionsWithLimit:(NSInteger)limit;
 /**
  *  根据当前 session 返回对应的最近会话信息
  *

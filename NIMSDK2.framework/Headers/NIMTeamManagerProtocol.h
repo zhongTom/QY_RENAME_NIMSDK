@@ -13,6 +13,7 @@
 #import "NIMCreateTeamOption.h"
 #import "NIMTeamSearchOption.h"
 #import "NIMTeamManagerDelegate.h"
+#import "NIMTeamMemberSearchOption.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -441,6 +442,20 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)fetchTeamMutedMembers:(NSString *)teamId
                    completion:(nullable NIMTeamMemberHandler)completion;
+
+
+/**
+ *  群成员类型查询成员列表
+ *
+ *  @param teamId     群组ID
+ *  @param option     搜索配置
+ *  @param completion 完成后的回调
+ *
+ */
+- (void)getTeamMemberList:(NSString *)teamId
+                   option:(NIMTeamMemberRoleTypeSearchOption *)option
+               completion:(nullable NIMTeamMemberSearchResultHandler)completion;
+
 
 
 /**

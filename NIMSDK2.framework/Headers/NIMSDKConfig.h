@@ -49,24 +49,24 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString *)tokenCallback:(const NSString *)url;
 
 /**
- * 采用动态Token登陆时，SDK通过该回调方法从App获取Token
+ * 采用动态Token登录时，SDK通过该回调方法从App获取Token
  */
-- (NSString *)dynamicTokenForAccount:(NSString *)account;
+- (nullable NSString *)dynamicTokenForAccount:(NSString *)account;
 
 /**
  * SDK通过该回调方法从App获取LoginExt
  */
-- (NSString *)dynamicLoginExtForAccount:(NSString *)account;
+- (nullable NSString *)dynamicLoginExtForAccount:(NSString *)account;
 
 /**
- * 采用动态Token登陆聊天室时，SDK通过该回调方法从App获取聊天室登陆Token
+ * 采用动态Token登录聊天室时，SDK通过该回调方法从App获取聊天室登陆Token
  */
-- (NSString *)dynamicChatRoomTokenForAccount:(NSString *)account room:(NSString *)roomId appKey:(NSString *)appKey;
+- (nullable NSString *)dynamicChatRoomTokenForAccount:(NSString *)account room:(NSString *)roomId appKey:(NSString *)appKey;
 
 /**
  * SDK通过该回调方法从App获取聊天室LoginExt
  */
-- (NSString *)dynamicChatRoomLoginExtForAccount:(NSString *)account room:(NSString *)roomId appKey:(NSString *)appKey;
+- (nullable NSString *)dynamicChatRoomLoginExtForAccount:(NSString *)account room:(NSString *)roomId appKey:(NSString *)appKey;
 
 @end
 

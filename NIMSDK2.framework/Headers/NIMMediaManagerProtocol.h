@@ -24,7 +24,6 @@ typedef NS_ENUM(NSInteger, NIMAudioOutputDevice){
     NIMAudioOutputDeviceSpeaker
 };
 
-
 /**
  *  云信支持的音频类型
  */
@@ -171,6 +170,12 @@ typedef void(^NIMAudioToTextBlock)(NSError * __nullable error,NSString * __nulla
  */
 @property (nonatomic, assign) NSTimeInterval recordProgressUpdateTimeInterval;
 
+/**
+ *  连接外接音频设备时是否仍使用内置麦克风，设置不做持久化，app运行周期有效
+ *  @discussion 默认为NO，为NO时则跟随系统last in原则输入音频，为YES时则使用内置麦克风
+ */
+@property (nonatomic, assign) BOOL shouldUseBuiltInMic;
+
 #pragma mark - play audio
 /**
  *  切换音频输出设备
@@ -180,7 +185,6 @@ typedef void(^NIMAudioToTextBlock)(NSError * __nullable error,NSString * __nulla
  *  @return 是否切换成功
  */
 - (BOOL)switchAudioOutputDevice:(NIMAudioOutputDevice)outputDevice;
-
 
 /**
  *  在播放声音的时候,如果手机贴近耳朵,是否需要自动切换成听筒播放

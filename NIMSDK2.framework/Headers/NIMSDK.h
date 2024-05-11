@@ -29,6 +29,7 @@
 #import "NIMRecentSession.h"
 #import "NIMMessageSearchOption.h"
 #import "NIMIncompleteSessionInfo.h"
+#import "NIMMessagesInSessionOption.h"
 
 
 /**
@@ -47,6 +48,8 @@
 #import "NIMTeamManagerDelegate.h"
 #import "NIMTeamFetchMemberOption.h"
 #import "NIMTeamSearchOption.h"
+#import "NIMTeamMemberSearchOption.h"
+#import "NIMTeamMemberSearchResult.h"
 
 /**
  *  聊天室相关定义
